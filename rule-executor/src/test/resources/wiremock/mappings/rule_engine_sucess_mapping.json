@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/get/by/nudge/id/transaction_1"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "rule_engine_success.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

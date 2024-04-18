@@ -1,0 +1,28 @@
+version: '3'
+services:
+  postgresdb:
+    container_name: monocept_postgresdb
+    image: postgis/postgis
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: rule-executor
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "log_statement=all"
+  awssqs:
+    container_name: monocept_sqs
+    image: softwaremill/elasticmq-native
+    ports:
+      - 9324:9324
+      - 9325:9325
+    restart: always
+volumes:
+  monocept_db_data:
+    driver: local

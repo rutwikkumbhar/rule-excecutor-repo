@@ -1,0 +1,46 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    includeStacktrace: always
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  http2:
+    enabled: true
+  use-forward-headers: ${USE_FORWARD_HEADERS:true}
+  forward-headers-strategy: ${FORWARD_HEADERS_STRATEGY:framework}
+  shutdown: graceful
+  tomcat:
+    mbeanregistry:
+      enabled: true
+spring:
+  data:
+    rest:
+      basePath: /rule-executor
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 2000
+  datasource:
+    hikari:
+      poolName: rule-executor
+      minimumIdle: 0
+      maximumPoolSize: 5
+
+    flyway:
+      locations:
+        - classpath: db/migration/{vendor}
+springdoc:
+  pathsToMatch: /rule-executor/**
+  api-docs:
+    path: /v1/api-docs
+

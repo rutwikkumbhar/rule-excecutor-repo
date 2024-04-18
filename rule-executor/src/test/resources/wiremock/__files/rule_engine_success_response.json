@@ -1,0 +1,15 @@
+{
+  "type": "transaction_1",
+  "NO_OF NUDGES_PER_DAY_PER_PERSON": 1,
+  "DDupe_check": "NUDGE_ID",
+  "templates": [
+    {
+      "id": 1,
+      "condition": "count>1"
+    },
+    {
+      "id": 2,
+      "condition": "count=1"
+    }
+  ]
+}

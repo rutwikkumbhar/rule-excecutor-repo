@@ -1,0 +1,47 @@
+spring:
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 2000
+  datasource:
+    url: ${DB_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    hikari:
+      poolName: rule-executor
+      minimumIdle: 0
+      maximumPoolSize: 5
+
+    flyway:
+      url: ${DB_URL}
+      username: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+
+  cloud:
+    aws:
+      sqs:
+        endpoint: ${SQS_ENDPOINT}
+        acknowledgment:
+          order-processing-no-retries-queue: ALWAYS
+      credentials:
+        accessKey: ${AWS_ACCESS_KEY:"x"}
+        secretKey: ${AWS_SECRET_KEY:"x"}
+      region:
+        static: ${AWS_REGION:"elasticmq"}
+    queues:
+      rule-executor-queue: rule_executor_queue
+      rule-executor-output-queue: rule_executor_output_queue
+
+
+rules-engine:
+  url: ${RULE_ENGINE_URL}
+
+

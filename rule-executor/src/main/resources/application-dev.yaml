@@ -1,0 +1,84 @@
+spring:
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 2000
+  datasource:
+    url: "jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}"
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    hikari:
+      poolName: rule-executor
+      minimumIdle: 0
+      maximumPoolSize: 5
+
+    flyway:
+      url: "jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DATABASE}"
+      username: ${POSTGRES_USER:postgres}
+      password: ${POSTGRES_PASSWORD:postgres}
+
+  cloud:
+    aws:
+      sqs:
+        endpoint: "http://localhost:9324"
+        acknowledgment:
+          order-processing-no-retries-queue: ALWAYS
+      credentials:
+        accessKey: ${AWS_ACCESS_KEY:"x"}
+        secretKey: ${AWS_SECRET_KEY:"x"}
+      region:
+        static: ${AWS_REGION:"elasticmq"}
+    queues:
+      rule-executor-queue: rule_executor_queue
+      rule-executor-output-queue: rule_executor_output_queue
+
+
+
+rules-engine:
+  url: "http://localhost:8012"
+
+scheduler:
+  retry: true
+  nudge-1:
+    start: "0 45 0 * * *"
+    id: "transaction_1"
+    retry: true
+    retry-start: "0 49 0 * * *"
+  nudge-2:
+    start: "0 2 15 * * *"
+    id: "transaction_2"
+  nudge-3:
+    start: "0 2 15 * * *"
+    id: "transaction_3"
+  nudge-4:
+    start: "0 2 15 * * *"
+    id: "transaction_4"
+  nudge-5:
+    start: "0 2 15 * * *"
+    id: "transaction_5"
+
+logging:
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      file-name-pattern: /logs/archived/application-%d{yyyy-MM-dd}.%i.log
+      max-history: 30
+  file:
+    name: /logs/application.log
+  pattern:
+    console: "%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable"
+    file: "%d %-5level [%thread] %logger : %msg%n"
+    level: "%5p"
+  level:
+    root: INFO
+    com.monocept: DEBUG
+
+
